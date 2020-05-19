@@ -31,7 +31,7 @@ router.get("/api/workouts/range", (req, res) => {
     });
 });
 
-router.post("/api/workouts/:id", (req, res) => {
+router.put("/api/workouts/:id", (req, res) => {
   db.Exercise.create(req.body)
     .then(dbTransaction => {
       db.Workout.findByIdAndUpdate(req.params.id, dbTransaction._id)
