@@ -37,8 +37,10 @@ router.put("/api/workouts/:id", (req, res) => {
     .then(dbTransaction => {
       console.log(dbTransaction);
       let myid = req.params.id;
-      let update = {exercise: [dbTransaction._id]};
-      db.Workout.findOneAndUpdate({id: myid}, {$push: update});
+      let update = {exercise: dbTransaction._id};
+      console.log(myid);
+      console.log(update);
+      db.Workout.findOneAndUpdate({_id: myid}, {$push: update}, {new: true})
       res.json(dbTransaction);
     })
     .catch(err => {
