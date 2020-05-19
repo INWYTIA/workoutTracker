@@ -11,7 +11,7 @@ router.get("/stats", (req, res) => {
 });
 
 router.get("/api/workouts", (req, res) => {
-  db.Workout.find({})
+  db.Workout.find({}).populate("Exercise")
     .sort({ date: 1 })
     .then(dbWorkout => {
       res.json(dbWorkout);
@@ -22,7 +22,7 @@ router.get("/api/workouts", (req, res) => {
 });
 
 router.get("/api/workouts/range", (req, res) => {
-  db.Workout.find({})
+  db.Workout.find({}).populate("Exercise")
     .then(dbWorkout => {
       res.json(dbWorkout);
     })
@@ -32,9 +32,13 @@ router.get("/api/workouts/range", (req, res) => {
 });
 
 router.put("/api/workouts/:id", (req, res) => {
-  db.Workout.update({id: req.params.id}, req.body)
+  console.log(req.body);
+  db.Exercise.findOneAndUpdate({name: req.body.name}, req.body, {new: true, upsert: true})
     .then(dbTransaction => {
-      db.Workout.findByIdAndUpdate(req.params.id, dbTransaction._id)
+      console.log(dbTransaction);
+      let id = req.params.id;
+      let update = {exercise: [dbTransaction._id]};
+      db.Workout.findByIdAndUpdate(id, update);
       res.json(dbTransaction);
     })
     .catch(err => {
