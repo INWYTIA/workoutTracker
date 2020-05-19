@@ -2,13 +2,13 @@ const router = require("express").Router();
 var path = require("path");
 const db = require("../models");
 
-// module.exports = function(app) {
-//   app.get("/", function(req, res) {
-//     res.sendFile(path.join(__dirname, "../public/index.html"));
-//   });
-// };
+router.get("/exercise", (req, res) => {
+  res.sendFile(path.join(__dirname, "../public/exercise.html"));
+});
 
-//TODO: work out routes
+router.get("/stats", (req, res) => {
+  res.sendFile(path.join(__dirname, "../public/stats.html"));
+});
 
 router.get("/api/workouts", (req, res) => {
   db.Workout.find({})
